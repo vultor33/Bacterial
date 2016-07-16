@@ -5,6 +5,7 @@ PlotGraph::PlotGraph(std::vector<double> & firstRow_in,
     :QGraphicsView(parent)
 {
     firstRow = firstRow_in;
+    nPlottingPoints = firstRow.size();
     QGraphicsScene *scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
     sceneX = -250;
@@ -44,7 +45,7 @@ void PlotGraph::timerEvent(QTimerEvent *event)
     // e o y max e minimo deve ser reescalonado para caber aqui, ou limitado de alguma forma.
 
     addingLine++;
-    int xStep = 10;
+    int xStep = (xMax - xOrigin) / nPlottingPoints;
     if(addingLine < (int)firstRow.size())
     {
         double y0 = firstRow[addingLine -1];
@@ -52,7 +53,8 @@ void PlotGraph::timerEvent(QTimerEvent *event)
         this->scene()->addLine(xOrigin + addingLine * xStep,
                                yOrigin - y0 ,
                                xOrigin + (1 + addingLine) * xStep,
-                               yOrigin - y1,QPen(Qt::blue, 5));
+                               yOrigin - y1,
+                               QPen(Qt::blue, 2));
     }
 
 

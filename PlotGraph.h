@@ -30,6 +30,7 @@ private:
     int xMax;
     int yMax;
 
+    int nPlottingPoints;
     int addingLine;
 
 };
