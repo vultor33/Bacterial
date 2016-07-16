@@ -2,5 +2,4 @@
 
 BacteriaSystem::BacteriaSystem()
 {
-
 }
