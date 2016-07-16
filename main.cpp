@@ -21,3 +21,9 @@ int main(int argc, char *argv[])
     return app.exec();
 
 }
+
+// crescimento de bacterias em placa de petri
+// divide os bichos
+
+
+
