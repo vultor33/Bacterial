@@ -2,6 +2,8 @@
 
 #include <QGraphicsItem>
 #include <QTextStream>
+#include <QDebug>
+#include <QTimerEvent>
 
 #include <math.h>
 
@@ -54,6 +56,7 @@ widget::widget(QWidget *parent)
 
     // as bacterias sao indistinguiveis.
     timerId = startTimer(1000 / 50);
+    timerAnimation = startTimer(1000 / 5);
 
     // xzinho no olho ela morreu
     // fazer uma funcao para encontrar a posicao da bacteria adjacente a alguma disponivel
@@ -81,14 +84,50 @@ void widget::drawBackground(QPainter *painter, const QRectF &rect)
 
 void widget::timerEvent(QTimerEvent *event)
 {
-    Q_UNUSED(event);
+    //qDebug() << "Timer ID:" << event->timerId();
+
+    // replicar
+    // morrer
 
 
-    //
-
-
-    // dance bacterias
-    allBacterias[0]->moveBy(3,3);
+    if (event->timerId() == timerAnimation)
+    {
+        timerAnimation = startTimer(1000 / 5);
+        //dance bacterias
+        for(int i=0; i < allBacterias.size(); i++)
+        {
+            QPointF bacIPos = findGridPosition(i);
+            qreal xOriginalPos = ((bacIPos.x() + 0.5) * bacHorizonSize) + sceneX;
+            qreal yOriginalPos = ((bacIPos.y() + 0.5) * bacVertSize) + sceneY;
+            qreal xActualPos = allBacterias[i]->pos().x();
+            qreal yActualPos = allBacterias[i]->pos().y();
+            qreal dx = randcpp(-2.0,2.0);
+            qreal dy = randcpp(-2.0,2.0);
+            // > 0 tenho q andar pra frente
+            if((xOriginalPos - xActualPos) > bacHorizonSize / 4 )
+            {
+                if(dx < 0)
+                    dx = -dx;
+            }
+            else if((xOriginalPos - xActualPos) < -bacHorizonSize / 4 )
+            {
+                if(dx > 0)
+                    dx = -dx;
+            }
+            if((yOriginalPos - yActualPos) > bacVertSize / 4 )
+            {
+                if(dy < 0)
+                    dy = -dy;
+            }
+            else if((yOriginalPos - yActualPos) < -bacVertSize / 4 )
+            {
+                if(dy > 0)
+                    dy = -dy;
+            }
+            if(allBacterias[i]->getDeadAlive())
+                allBacterias[i]->moveBy(dx,dy);
+        }
+    }
 }
 
 void widget::itemMoved()
@@ -96,7 +135,6 @@ void widget::itemMoved()
     if (!timerId)
         timerId = startTimer(1000 / 50);
 }
-
 
 // so pode entrar aqui se o numero de bacterias for menor do que nHorizon x nVert
 // senao e loop infinito
@@ -141,6 +179,20 @@ void widget::findSlotToReplicate(int & x, int & y)
     y = posy;
 }
 
+QPointF widget::findGridPosition(int iBac)
+{
+    for(int i=0; i<nHorizon; i++)
+    {
+        for(int j=0; j<nVert; j++)
+        {
+            if(bacteriaGrid[i][j] == iBac)
+            {
+                return QPointF(i,j);
+            }
+        }
+    }
+    return QPointF(0,0);
+}
 
 double widget::randcpp(double fMin, double fMax)
 {

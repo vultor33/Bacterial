@@ -22,6 +22,7 @@ protected:
 
 private:
     int timerId;
+    int timerAnimation;
     QList<bacteria *> allBacterias;
 
     bacteria * bact1;
@@ -37,6 +38,7 @@ private:
     int nVert;
 
     void findSlotToReplicate(int & x, int & y);
+    QPointF findGridPosition(int iBac);
     double randcpp(double fMin, double fMax);
     int randcpp(int fMin, int fMax);
 
