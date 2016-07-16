@@ -3,6 +3,7 @@
 #include <QGraphicsItem>
 #include <QList>
 #include <QPainter>
+#include <QPixmap>
 
 
 bacteria::bacteria()
@@ -42,11 +43,16 @@ void bacteria::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 
    QRadialGradient gradient((int)(x/3), (int)(y/3), (int)(size/2));
    gradient.setColorAt(0, Qt::white);
-   gradient.setColorAt(1, Qt::darkGreen);
+   //gradient.setColorAt(1, Qt::darkGreen);
+   gradient.setColorAt(1, Qt::green);
 
    painter->setBrush(gradient);
+   painter->setOpacity(0.5);
    painter->setPen(QPen(Qt::black, 0));
    painter->drawEllipse(x, y, size, size);
+   painter->drawEllipse(4, 5, 5, 10);
+   painter->drawEllipse(11, 5, 5, 10);
+
 }
 
 
