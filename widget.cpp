@@ -50,18 +50,9 @@ widget::widget(QWidget *parent)
     bacteriaGrid[12][12] = 0;
     allBacterias[0]->setPos(12.5 * bacHorizonSize + sceneX, 12.5 * bacVertSize + sceneY);
 
-    //QString str;
-    //QTextStream(&str) << "posx:  " << bacteriaGrid[i][j] << "  posy:  " << allBacterias[0]->pos().y() << "  " << endl;
-    //scene->addText(str);
-
     // as bacterias sao indistinguiveis.
-    timerId = startTimer(1000 / 50);
+    timerId = startTimer(1000 / 0.5);
     timerAnimation = startTimer(1000 / 5);
-
-    // xzinho no olho ela morreu
-    // fazer uma funcao para encontrar a posicao da bacteria adjacente a alguma disponivel
-    // replicar e imprimir as bacterias.
-
 }
 
 
@@ -89,6 +80,21 @@ void widget::timerEvent(QTimerEvent *event)
     // replicar
     // morrer
 
+    if (event->timerId() == timerId)
+    {
+        if(allBacterias.size() < nHorizon * nVert)
+        {
+            int iSlot, jSlot;
+            findSlotToReplicate(iSlot, jSlot);
+            int iBac = allBacterias.size();
+            bacteriaGrid[iSlot][jSlot] = iBac;
+            bacteria * bactn = new bacteria();
+            this->scene()->addItem(bactn);
+            allBacterias << bactn;
+            allBacterias[iBac]->setPos((iSlot + 0.5) * bacHorizonSize + sceneX, (jSlot + 0.5) * bacVertSize + sceneY);
+        }
+    }
+
 
     if (event->timerId() == timerAnimation)
     {
@@ -96,6 +102,7 @@ void widget::timerEvent(QTimerEvent *event)
         //dance bacterias
         for(int i=0; i < allBacterias.size(); i++)
         {
+            qreal maxStep = 6;
             QPointF bacIPos = findGridPosition(i);
             qreal xOriginalPos = ((bacIPos.x() + 0.5) * bacHorizonSize) + sceneX;
             qreal yOriginalPos = ((bacIPos.y() + 0.5) * bacVertSize) + sceneY;
@@ -104,22 +111,22 @@ void widget::timerEvent(QTimerEvent *event)
             qreal dx = randcpp(-2.0,2.0);
             qreal dy = randcpp(-2.0,2.0);
             // > 0 tenho q andar pra frente
-            if((xOriginalPos - xActualPos) > bacHorizonSize / 4 )
+            if((xOriginalPos - xActualPos) > bacHorizonSize / maxStep )
             {
                 if(dx < 0)
                     dx = -dx;
             }
-            else if((xOriginalPos - xActualPos) < -bacHorizonSize / 4 )
+            else if((xOriginalPos - xActualPos) < -bacHorizonSize / maxStep )
             {
                 if(dx > 0)
                     dx = -dx;
             }
-            if((yOriginalPos - yActualPos) > bacVertSize / 4 )
+            if((yOriginalPos - yActualPos) > bacVertSize / maxStep )
             {
                 if(dy < 0)
                     dy = -dy;
             }
-            else if((yOriginalPos - yActualPos) < -bacVertSize / 4 )
+            else if((yOriginalPos - yActualPos) < -bacVertSize / maxStep )
             {
                 if(dy > 0)
                     dy = -dy;
@@ -132,8 +139,8 @@ void widget::timerEvent(QTimerEvent *event)
 
 void widget::itemMoved()
 {
-    if (!timerId)
-        timerId = startTimer(1000 / 50);
+   // if (!timerId)
+   //     timerId = startTimer(1000 / 50);
 }
 
 // so pode entrar aqui se o numero de bacterias for menor do que nHorizon x nVert
@@ -144,14 +151,14 @@ void widget::findSlotToReplicate(int & x, int & y)
     int zero = 0;
     while(true)
     {
-        posx = randcpp(zero,nHorizon);
-        posy = randcpp(zero,nVert);
+        posx = randcpp(zero,nHorizon-1);
+        posy = randcpp(zero,nVert-1);
         if(bacteriaGrid[posx][posy] != -1)
             continue;
 
-        bool checkXp = (posx + 1) <= nHorizon;
+        bool checkXp = (posx + 1) < nHorizon;
         bool checkXm = (posx - 1) >= 0;
-        bool checkYp = (posy + 1) <= nVert;
+        bool checkYp = (posy + 1) < nVert;
         bool checkYm = (posy - 1) >= 0;
 
         if(checkXp)
@@ -204,3 +211,8 @@ int widget::randcpp(int fMin, int fMax)
 {
     return fMin + (rand() % (int)(fMax - fMin + 1));
 }
+
+
+//QString str;
+//QTextStream(&str) << "posx:  " << bacteriaGrid[i][j] << "  posy:  " << allBacterias[0]->pos().y() << "  " << endl;
+//scene->addText(str);
