@@ -6,6 +6,9 @@
 #include <QTime>
 #include <QMainWindow>
 
+// CONSTRUIR O VETOR INTEIRO E PASSAR PARA OS CARAS JA O RESULTADO
+// A CADA TIME EVENT EU APENAS ATUALIZO A SITUACAO
+
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);

@@ -77,9 +77,6 @@ void widget::timerEvent(QTimerEvent *event)
 {
     //qDebug() << "Timer ID:" << event->timerId();
 
-    // replicar
-    // morrer
-
     if (event->timerId() == timerId)
     {
         if(allBacterias.size() < nHorizon * nVert)
@@ -135,12 +132,6 @@ void widget::timerEvent(QTimerEvent *event)
                 allBacterias[i]->moveBy(dx,dy);
         }
     }
-}
-
-void widget::itemMoved()
-{
-   // if (!timerId)
-   //     timerId = startTimer(1000 / 50);
 }
 
 // so pode entrar aqui se o numero de bacterias for menor do que nHorizon x nVert

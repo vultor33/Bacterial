@@ -15,10 +15,16 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     widget.cpp \
-    bacteria.cpp
+    bacteria.cpp \
+    Integrator.cpp \
+    BacteriaSystem.cpp \
+    PlotGraph.cpp
 
 HEADERS  += mainwindow.h \
     widget.h \
-    bacteria.h
+    bacteria.h \
+    Integrator.h \
+    BacteriaSystem.h \
+    PlotGraph.h
 
 FORMS    += mainwindow.ui

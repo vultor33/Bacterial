@@ -13,7 +13,6 @@ class widget : public QGraphicsView
 
 public:
     widget(QWidget *parent = 0);
-    void itemMoved();
 
 protected:
     void drawBackground(QPainter *painter, const QRectF &rect) Q_DECL_OVERRIDE;
