@@ -10,6 +10,8 @@
 
 // CONSTRUIR O VETOR INTEIRO E PASSAR PARA OS CARAS JA O RESULTADO
 // A CADA TIME EVENT EU APENAS ATUALIZO A SITUACAO
+// --> NAO - TEM QUE FAZER EM TEMPO REAL, MUDANDO OS PARAMETROS NA
+//           HORA, AI SIM E EMOCAO.
 
 int main(int argc, char *argv[])
 {
@@ -40,7 +42,18 @@ int main(int argc, char *argv[])
     //bacterias
     //widget *pWidget = new widget;
     //grafico
-    PlotGraph *pWidget = new PlotGraph(x);
+    std::vector<double> a,b,c;
+    a = x;
+    b = x;
+    c = x;
+    for(size_t i =0; i < x.size(); i++)
+    {
+        a[i] -= i;
+        b[i] = b[i] + i;
+        c[i] *= 1.1;
+
+    }
+    PlotGraph *pWidget = new PlotGraph(x,a,b,c);
 
     QMainWindow mainWindow;
     mainWindow.setFixedHeight(500);

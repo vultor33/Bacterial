@@ -11,7 +11,12 @@ class PlotGraph : public QGraphicsView
     Q_OBJECT
 
 public:
-    PlotGraph(std::vector<double> & firstRow_in, QWidget *parent = 0);
+    PlotGraph(
+            std::vector<double> & firstRow_in,
+            std::vector<double> & secondRow_in,
+            std::vector<double> & thirdRow_in,
+            std::vector<double> & fourthRow_in,
+            QWidget *parent = 0);
 
 protected:
     void drawBackground(QPainter *painter, const QRectF &rect) Q_DECL_OVERRIDE;
@@ -19,6 +24,9 @@ protected:
 
 private:
     std::vector<double> firstRow;
+    std::vector<double> secondRow;
+    std::vector<double> thirdRow;
+    std::vector<double> fourthRow;
     int timerId;
     int sceneX;
     int sceneY;
@@ -32,6 +40,8 @@ private:
 
     int nPlottingPoints;
     int addingLine;
+
+    double maxValue(std::vector<double> & x);
 
 };
 

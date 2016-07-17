@@ -1,10 +1,16 @@
 #include "PlotGraph.h"
 
 PlotGraph::PlotGraph(std::vector<double> & firstRow_in,
+                     std::vector<double> & secondRow_in,
+                     std::vector<double> & thirdRow_in,
+                     std::vector<double> & fourthRow_in,
                      QWidget *parent)
     :QGraphicsView(parent)
 {
     firstRow = firstRow_in;
+    secondRow = secondRow_in;
+    thirdRow = thirdRow_in;
+    fourthRow = fourthRow_in;
     nPlottingPoints = firstRow.size();
     QGraphicsScene *scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
@@ -46,15 +52,53 @@ void PlotGraph::timerEvent(QTimerEvent *event)
 
     addingLine++;
     int xStep = (xMax - xOrigin) / nPlottingPoints;
+    double maxY = maxValue(firstRow) / (-yMax + yOrigin);
     if(addingLine < (int)firstRow.size())
     {
-        double y0 = firstRow[addingLine -1];
-        double y1 = firstRow[addingLine];
-        this->scene()->addLine(xOrigin + addingLine * xStep,
-                               yOrigin - y0 ,
-                               xOrigin + (1 + addingLine) * xStep,
-                               yOrigin - y1,
+        double y1a = firstRow[addingLine -1] / maxY;
+        double y1b = firstRow[addingLine] / maxY;
+        this->scene()->addLine(xOrigin + (-1 + addingLine) * xStep,
+                               yOrigin - y1a,
+                               xOrigin + addingLine * xStep,
+                               yOrigin - y1b,
                                QPen(Qt::blue, 2));
+
+        if(secondRow.size() > 0)
+        {
+
+            double y2a = secondRow[addingLine -1] / maxY;
+            double y2b = secondRow[addingLine] / maxY;
+            this->scene()->addLine(xOrigin + (-1 + addingLine) * xStep,
+                               yOrigin - y2a,
+                               xOrigin + addingLine * xStep,
+                               yOrigin - y2b,
+                               QPen(Qt::darkGreen, 2));
+        }
+        if(thirdRow.size() > 0)
+        {
+
+            double y3a = thirdRow[addingLine -1] / maxY;
+            double y3b = thirdRow[addingLine] / maxY;
+            this->scene()->addLine(xOrigin + (-1 + addingLine) * xStep,
+                               yOrigin - y3a,
+                               xOrigin + addingLine * xStep,
+                               yOrigin - y3b,
+                               QPen(Qt::darkRed, 2));
+        }
+        if(fourthRow.size() > 0)
+        {
+
+            double y4a = fourthRow[addingLine -1] / maxY;
+            double y4b = fourthRow[addingLine] / maxY;
+            this->scene()->addLine(xOrigin + (-1 + addingLine) * xStep,
+                               yOrigin - y4a,
+                               xOrigin + addingLine * xStep,
+                               yOrigin - y4b,
+                               QPen(Qt::darkGray, 2));
+        }
+
+
+
     }
 
 
@@ -83,4 +127,19 @@ void PlotGraph::drawBackground(QPainter *painter, const QRectF &rect)
     painter->drawLine(QPointF(sceneX + 30, sceneY + 30), QPointF(sceneX + 30, sceneY + sceneHeigth - 30));
     painter->drawLine(QPointF(sceneX + 20, sceneY + sceneHeigth - 80), QPointF(sceneX + sceneWidth - 30, sceneY + sceneHeigth - 80));
 
+}
+
+double PlotGraph::maxValue(std::vector<double> & x)
+{
+    int iMax = 0;
+    double max = x[iMax];
+    for(size_t i = 1; i < x.size(); i++)
+    {
+        if(x[i] > max)
+        {
+            iMax = i;
+            max = x[i];
+        }
+    }
+    return max;
 }
