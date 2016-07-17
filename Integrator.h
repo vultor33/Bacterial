@@ -9,6 +9,7 @@ public:
     Integrator();
 
     void advanceEquations(std::vector<double> & point, std::vector<double> & derivative);
+    double advanceEquations(double point, double derivative);
 
 private:
     double timeStep;

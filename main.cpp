@@ -2,11 +2,14 @@
 
 #include "widget.h"
 #include "PlotGraph.h"
+#include "BacteriaSystem.h"
 
 #include <QApplication>
 #include <QTime>
 #include <QMainWindow>
+#include <QDebug>
 #include <vector>
+
 
 // CONSTRUIR O VETOR INTEIRO E PASSAR PARA OS CARAS JA O RESULTADO
 // A CADA TIME EVENT EU APENAS ATUALIZO A SITUACAO
@@ -15,6 +18,10 @@
 
 int main(int argc, char *argv[])
 {
+    BacteriaSystem bac_;
+    bac_.propagate();
+
+
     QApplication app(argc, argv);
 
     std::vector<double> x(20);
@@ -53,6 +60,11 @@ int main(int argc, char *argv[])
         c[i] *= 1.1;
 
     }
+    x = bac_.getAlimento();
+    a = bac_.getReagente();
+    b = bac_.getMetabolito();
+    c = bac_.getResiduo();
+    qDebug() << x[0] << "   size   " << x.size() << endl;
     PlotGraph *pWidget = new PlotGraph(x,a,b,c);
 
     QMainWindow mainWindow;

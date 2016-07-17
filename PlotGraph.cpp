@@ -1,5 +1,7 @@
 #include "PlotGraph.h"
 
+#include <QGraphicsTextItem>
+
 PlotGraph::PlotGraph(std::vector<double> & firstRow_in,
                      std::vector<double> & secondRow_in,
                      std::vector<double> & thirdRow_in,
@@ -32,7 +34,7 @@ PlotGraph::PlotGraph(std::vector<double> & firstRow_in,
     setTransformationAnchor(AnchorUnderMouse);
     setWindowTitle(tr("Bacterial Growth - Graph"));
 
-    timerId = startTimer(1000 / 5);
+    timerId = startTimer(1000 / 50);
 
     addingLine = 0;
 }
@@ -126,6 +128,26 @@ void PlotGraph::drawBackground(QPainter *painter, const QRectF &rect)
     painter->setPen(QPen(Qt::black, 3));
     painter->drawLine(QPointF(sceneX + 30, sceneY + 30), QPointF(sceneX + 30, sceneY + sceneHeigth - 30));
     painter->drawLine(QPointF(sceneX + 20, sceneY + sceneHeigth - 80), QPointF(sceneX + sceneWidth - 30, sceneY + sceneHeigth - 80));
+
+
+    painter->setPen(QPen(Qt::blue, 3));
+    painter->drawEllipse(QPointF(sceneX+50,sceneY+30),5,5);
+    painter->setPen(QPen(Qt::darkGreen, 3));
+    painter->drawEllipse(QPointF(sceneX+50,sceneY+50),5,5);
+    painter->setPen(QPen(Qt::darkRed, 3));
+    painter->drawEllipse(QPointF(sceneX+50,sceneY+70),5,5);
+    painter->setPen(QPen(Qt::darkGray, 3));
+    painter->drawEllipse(QPointF(sceneX+50,sceneY+90),5,5);
+
+    QGraphicsTextItem *text1 = this->scene()->addText("Alimento");
+    QGraphicsTextItem *text2 = this->scene()->addText("Reagente");
+    QGraphicsTextItem *text3 = this->scene()->addText("Metabolito");
+    QGraphicsTextItem *text4 = this->scene()->addText("Residuo");
+    text1->setPos(sceneX+60,sceneY+20);
+    text2->setPos(sceneX+60,sceneY+40);
+    text3->setPos(sceneX+60,sceneY+60);
+    text4->setPos(sceneX+60,sceneY+80);
+
 
 }
 

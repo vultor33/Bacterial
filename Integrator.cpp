@@ -4,7 +4,7 @@ using namespace std;
 
 Integrator::Integrator()
 {
-    timeStep = 1.0e-6;
+    timeStep = 1.0e-2;
 }
 
 void Integrator::advanceEquations(vector<double> & point, vector<double> & derivative)
@@ -15,6 +15,10 @@ void Integrator::advanceEquations(vector<double> & point, vector<double> & deriv
     }
 }
 
+double Integrator::advanceEquations(double point, double derivative)
+{
+    return point + timeStep * derivative;
+}
 
 
 
